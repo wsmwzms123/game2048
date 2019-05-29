@@ -1,0 +1,50 @@
+$container-width: 500px;
+$container-height: 500px;
+$cell-width: (500px - 75px) / 4;
+$cell-height: (500px - 75px) / 4;
+$tile-radius: 3px;
+$tile-font-color: #f9f6f2;
+
+@mixin flex-center { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin tile-position($row: 4, $column: 4) {
+  // $row-increment: 0;
+  // $column-increment: 0;
+  @for $i from 1 through $row {
+    @for $j from 1 through $column {
+      // @if $i > 2 {
+      //   $row-increment: 1px;
+      // } @else {
+      //   $row-increment: 0px;
+      // }
+      // @if $j > 2 {
+      //   $column-increment: 1px;
+      // } @else {
+      //   $column-increment: 0px;
+      // }
+      .tile.tile-position-#{$i}-#{$j} {
+        // transform: translate(($i - 1) * 67px + $row-increment, ($j - 1) * 67px + $column-increment);
+        transform: translate(($i - 1) * 121px, ($j - 1) * 121px);
+      } 
+    }
+  }
+}
+
+@keyframes appear  {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+}
+
+@mixin box-shadow($alpha, $alpha-inset) {
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, $alpha), inset 0 0 0 1px rgba(255, 255, 255, $alpha-inset)
+}

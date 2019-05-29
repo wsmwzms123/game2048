@@ -1,0 +1,140 @@
+@import "./variable.scss";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  @include flex-center
+
+  .container {
+    position: relative;
+    width: $container-width;
+    height: $container-height;
+    background: #bbada0;
+    border-radius: 6px;
+    padding: 15px;
+
+    .tile-container {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      @include  tile-position(4, 4);
+      .tile {
+        font-size: 55px;
+        width: $cell-width;
+        height: $cell-height;
+        @include flex-center
+        border-radius: $tile-radius;
+        transition: transform 100ms;
+        .tile-inner {
+          width: $cell-width;
+          height: $cell-height;
+          line-height: $cell-height;
+          border-radius: $tile-radius;
+          background: #eee4da;
+          text-align: center;
+          font-weight: bold;
+          z-index: 10;
+          font-size: 55px;
+          &.tile-new {
+            animation: appear 200ms ease 100ms
+          }
+        }
+        &.tile-2 .tile-inner{
+          background: #eee4da;
+          @include box-shadow(0, 0)
+        }
+        &.tile-4 .tile-inner{
+          background: #ede0c8;
+          @include box-shadow(0, 0)
+        }
+        &.tile-8 .tile-inner{
+          color: $tile-font-color;
+          background: #f2b179;
+        }
+        &.tile-16 .tile-inner{
+          color: $tile-font-color;
+          background: #f59563;
+        }
+        &.tile-32 .tile-inner{
+          color: $tile-font-color;
+          background: #f67c5f;
+        }
+        &.tile-64 .tile-inner {
+          color: $tile-font-color;
+          background: #f65e3b; 
+        }
+        &.tile-128.tile-inner {
+          color: $tile-font-color;
+          background: #edcf72;
+          font-size: 45px;
+          @include box-shadow(0.2381, 0.14286)
+        }
+        &.tile-256.tile-inner {
+          color: $tile-font-color;
+          background: #edcc61;
+          font-size: 45px;
+          @include box-shadow(0.31746, 0.19048)
+        }
+        &.tile-512.tile-inner {
+          color: $tile-font-color;
+          background: #edc850;
+          font-size: 45px;
+          @include box-shadow(0.39683, 0.2381)
+        }
+        &.tile-1024.tile-inner {
+          color: $tile-font-color;
+          background: #edc53f;
+          font-size: 35px;
+          @include box-shadow(0.47619, 0.28571)
+        }
+        &.tile-2048.tile-inner {
+          color: $tile-font-color;
+          background: #edc22e;
+          font-size: 35px;
+          @include box-shadow(0.55556, 0.33333)
+        }
+      }
+    }
+
+    .grid-wrap {
+      display: flex;
+      flex-flow: row wrap;
+      align-content: flex-start;
+
+      .grid-cell {
+        width: $cell-width;
+        height: $cell-height;
+        background: rgba(238, 228, 218, 0.35);
+        margin: 0 15px 15px 0;
+        border-radius: $tile-radius;
+      }
+
+      .grid-cell:nth-child(4n) {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
