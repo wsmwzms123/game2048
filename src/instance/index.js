@@ -1,7 +1,7 @@
 import init from './init'
 class Game2048 {
   constructor (options) {
-    this.init(options)
+    this._init(options)
   }
 }
 init(Game2048)

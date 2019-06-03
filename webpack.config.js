@@ -9,6 +9,7 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
+  devtool: 'cheap-source-map',
   module: {
     rules: [
       {
@@ -28,15 +29,13 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: './dist',
+    open: true,
     hot: true,
     compress: true,
     port: 9527,
-    stats: {
-      modules: false,
-      children: false,
-      chunks: false,
-      chunkModules: false
+    overlay: {
+      warnings: false,
+      errors: true
     }
   },
   plugins: [
