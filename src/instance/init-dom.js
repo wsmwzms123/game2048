@@ -1,10 +1,15 @@
 
-import { query, addClass, removeClass } from '../utils/dom'
+import { addClass } from '../utils/dom'
 import { types } from '../utils/index'
 
 const TILE_CLASS = 'tile'
 const TILE_INNER_CLASS = 'tile-inner'
-const DEFAULT_TILE_NUM = 2
+const TILE_NUM = 2
+const POSITION_CLASS_PREFIX = 'tile-position'
+const TILE_NEW_CLASS = 'tile-new'
+const TILE_MERGED_CLASS = 'tile-merged'
+const UNIT_TILES = 4
+
 export function createBasicTile () {
   const tile = document.createElement('div')
   const tileInner = document.createElement('div')
@@ -14,12 +19,12 @@ export function createBasicTile () {
   return tile
 }
 
-export function createTileDom (num, position, ifNew, ifMerged) {
-  const POSITION_CLASS_PREFIX = 'tile-position'
+// 10%的概率生成4，其余为2
+const getInitNum = () => !~~(Math.random() * 10) ? 4 : 2
+
+export function createTileDom (position, ifNew, ifMerged) {
   const tile = createBasicTile()
-  const TILE_NEW_CLASS = 'tile-new'
-  const TILE_MERGED_CLASS = 'tile-merged'
-  tile.querySelector(`.${TILE_INNER_CLASS}`).textContent = num
+  tile.querySelector(`.${TILE_INNER_CLASS}`).textContent = position.value
   if (!types.isString(position)) {
     position = `-${position.x || 1}-${position.y || 1}`
   }
@@ -34,43 +39,48 @@ export function createTileDom (num, position, ifNew, ifMerged) {
   return tile
 }
 
-function createShufflePos (gm) {
+function initShufflePos (gm, num = TILE_NUM) {
   const { gameState } = gm
   const result = []
   const emptyTilesList = gameState
     .reduce((init, cur, i) => {
       cur.forEach((item, index) => {
         item || init.push({
-          x: i + 1,
-          y: index + 1
+          x: index + 1,
+          y: i + 1,
+          index: UNIT_TILES * i + index
         })
       })
       return init
     }, [])
-  if (emptyTilesList.length < DEFAULT_TILE_NUM) return emptyTilesList
-  while (result.length < DEFAULT_TILE_NUM) {
+
+  const len = emptyTilesList.length
+  if (!len || len < num) return emptyTilesList
+  while (result.length < num) {
     const randomIndex = Math.floor(Math.random() * emptyTilesList.length)
-    result.push(emptyTilesList.splice(randomIndex, 1).pop())
+    const chosenPos = emptyTilesList.splice(randomIndex, 1).pop()
+
+    Object.assign(chosenPos, { value: getInitNum() })
+    result.push(chosenPos)
   }
   return result
 }
 
-// 10%的概率生成4，其余为2
-const getInitNum = () => !~~(Math.random() * 10) ? 4 : 2
-
 const createTiles = (gm) => {
-  const { el } = gm
-  createShufflePos(gm).forEach(pos => {
-    const dom = createTileDom(getInitNum(), pos, true)
+  const { el, gameState } = gm
+
+  const createdTilePos = initShufflePos(gm)
+  if (!createdTilePos.length) return
+
+  createdTilePos.forEach(pos => {
+    const { x, y } = pos
+    gameState[y - 1][x - 1] = pos
+    const dom = createTileDom(pos, true)
     el.appendChild(dom)
   })
 }
 export function initDom (gm, Game) {
-  // Game.prototype.createTile = function () {
-  //   const gm = this
-  // }
-  const { options } = gm
-  const { el } = options
-  gm.el = query(el)
+  gm._clearTiles()
+  createTiles(gm)
   createTiles(gm)
 }

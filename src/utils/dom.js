@@ -53,4 +53,12 @@ const removeClass = (el, cls) => {
   }
 }
 
-export { query, addClass, removeClass }
+const on = (el, eventName, cb) => {
+  return el.addEventListener(eventName, cb)
+}
+
+const off = (el, eventName, cb) => {
+  return el.removeEventListener(eventName, cb)
+}
+
+export { query, addClass, removeClass, on, off }

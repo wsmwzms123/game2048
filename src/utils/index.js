@@ -9,4 +9,12 @@ typesList.split(/\s+/).forEach(name => {
 })
 Object.freeze(typesList)
 
-export { types }
+const isUndef = target => target == null
+
+const flatArr = (arr) => {
+  return arr.reduce((init, cur) => {
+    return init.concat(Array.isArray(cur) ? flatArr(cur) : cur)
+  }, [])
+}
+
+export { types, isUndef, flatArr }
