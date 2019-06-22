@@ -8,6 +8,7 @@ const getIndex = (x, y) => {
     x = x.x
     y = x.y
   }
+  console.log(666)
   return (y - 1) * UNIT_TILES + x - 1
 }
 const EVENT_METHOD = 'keydown'
