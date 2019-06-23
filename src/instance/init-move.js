@@ -19,14 +19,13 @@ const ACTIONS_MAP = {
   '40': 'down'
 }
 function getCorCategory (action) {
-  switch (action) {
-    case 'up':
-    case 'down':
-      return 'x'
-    default:
-      return 'y'
+  if (action === 'up' || action === 'down') {
+    return 'x'
+  } else {
+    return 'y'
   }
 }
+
 function tileMove (gm, action) {
   const children = Array.from(gm._getTiles())
   const posArr = flatArr(gm.gameState).filter(Boolean)
@@ -59,7 +58,7 @@ export default function (gm, Game) {
 
   on(window, EVENT_METHOD, keydownHandler)
 
-  proto._clearKeyboardEvents = function () {
+  proto._clearEvents = function () {
     off(window, EVENT_METHOD, keydownHandler)
   }
 }

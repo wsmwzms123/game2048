@@ -4,7 +4,7 @@ import { types } from '../utils/index'
 
 const TILE_CLASS = 'tile'
 const TILE_INNER_CLASS = 'tile-inner'
-const TILE_NUM = 2
+const TILE_NUM = 4
 const POSITION_CLASS_PREFIX = 'tile-position'
 const TILE_NEW_CLASS = 'tile-new'
 const TILE_MERGED_CLASS = 'tile-merged'
@@ -48,7 +48,8 @@ function initShufflePos (gm, num = TILE_NUM) {
         item || init.push({
           x: index + 1,
           y: i + 1,
-          index: UNIT_TILES * i + index
+          index: UNIT_TILES * i + index,
+          sort: UNIT_TILES * index + i
         })
       })
       return init
@@ -58,12 +59,14 @@ function initShufflePos (gm, num = TILE_NUM) {
   if (!len || len < num) return emptyTilesList
   while (result.length < num) {
     const randomIndex = Math.floor(Math.random() * emptyTilesList.length)
-    const chosenPos = emptyTilesList.splice(randomIndex, 1).pop()
-
+    const chosenPos = emptyTilesList
+      .splice(randomIndex, 1).pop()
     Object.assign(chosenPos, { value: getInitNum() })
     result.push(chosenPos)
   }
-  return result
+  return result.sort((x, y) => {
+    return x.sort - y.sort
+  })
 }
 
 const createTiles = (gm) => {
@@ -81,6 +84,5 @@ const createTiles = (gm) => {
 }
 export function initDom (gm, Game) {
   gm._clearTiles()
-  createTiles(gm)
   createTiles(gm)
 }

@@ -6,6 +6,12 @@ export default function init (Game) {
   const proto = Game.prototype
   proto._init = function (options = {}) {
     const gm = this
+    if (Game._hasInstance) {
+      Game._hasInstance = false
+      Game._currentInstance._clearEvents()
+    }
+    Game._currentInstance = gm
+    Game._hasInstance = true
     gm.options = options
     gm.el = query(options.el)
     initState(gm)
