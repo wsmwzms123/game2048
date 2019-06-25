@@ -74,4 +74,11 @@ const getTileFromPos = (pos, ctx) => {
   return ctx.querySelector(clsName)
 }
 
-export { query, addClass, removeClass, on, off, changeTilePosClass, getTileFromPos }
+const getNum = (el) => {
+  return el.textContent
+}
+
+const doubleNum = (el, num) => {
+  el.querySelector('.tile-inner').textContent = +getNum(el) * 2
+}
+export { query, addClass, removeClass, on, off, changeTilePosClass, getTileFromPos, getNum, doubleNum }

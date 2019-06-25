@@ -24,7 +24,8 @@ const getInitNum = () => !~~(Math.random() * 10) ? 4 : 2
 
 export function createTileDom (position, ifNew, ifMerged) {
   const tile = createBasicTile()
-  tile.querySelector(`.${TILE_INNER_CLASS}`).textContent = position.value
+  tile.firstElementChild.textContent = position.value
+  addClass(tile, `${TILE_CLASS}-${position.value}`)
   if (!types.isString(position)) {
     position = `-${position.x || 1}-${position.y || 1}`
   }
@@ -39,7 +40,7 @@ export function createTileDom (position, ifNew, ifMerged) {
   return tile
 }
 
-function initShufflePos (gm, num = TILE_NUM) {
+function getShufflePos (gm, num = TILE_NUM) {
   const { gameState } = gm
   const result = []
   const emptyTilesList = gameState
@@ -69,11 +70,10 @@ function initShufflePos (gm, num = TILE_NUM) {
   })
 }
 
-const createTiles = function () {
+const createTiles = function (num) {
   const gm = this
   const { el, gameState } = gm
-  console.log(JSON.stringify(gameState))
-  const createdTilePos = initShufflePos(gm)
+  const createdTilePos = getShufflePos(gm, num)
   if (!createdTilePos.length) return
 
   createdTilePos.forEach(pos => {

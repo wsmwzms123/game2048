@@ -1,6 +1,6 @@
 // import Game from './index'
 import { flatArr } from '../utils'
-import { on, off, changeTilePosClass, getTileFromPos } from '../utils/dom'
+import { on, off, changeTilePosClass, getTileFromPos, getNum, doubleNum } from '../utils/dom'
 const UNIT_TILES = 4
 const POS_REG = /tile-position-(\d+)-(\d+)/
 const EVENT_METHOD = 'keydown'
@@ -10,14 +10,6 @@ const ACTIONS_MAP = {
   '39': 'right',
   '40': 'down'
 }
-
-// const getIndex = (x, y) => {
-//   if (types.isObject(x)) {
-//     y = x.y
-//     x = x.x
-//   }
-//   return (y - 1) * UNIT_TILES + x - 1
-// }
 
 function getCorCategory (action) {
   if (action === 'up' || action === 'down') {
@@ -45,12 +37,11 @@ function tileToGameState (gm) {
         x,
         y,
         index: UNIT_TILES * (indexY) + (indexX),
-        value: 2,
+        value: getNum(tile),
         sort: UNIT_TILES * (indexX) + (indexY)
       }
     })
   })
-  console.log(gm.gameState)
   return tiles
 }
 
@@ -69,6 +60,7 @@ function tileMove (gm, action) {
   Object.values(sortedObj).forEach(sortedArr => {
     let flag = null
     let increment = null
+    let lastTile = null
     if (action === 'up' || action === 'left') {
       flag = increment = 1
     } else {
@@ -84,9 +76,18 @@ function tileMove (gm, action) {
       }
       flag += increment
       changeTilePosClass(specifiedTile, tempPos)
+      if (lastTile && getNum(lastTile) === getNum(specifiedTile)) {
+        doubleNum(lastTile)
+        lastTile = null
+        gm._clearTiles(specifiedTile)
+        flag -= increment
+      } else {
+        lastTile = specifiedTile
+      }
     })
   })
   tileToGameState(gm)
+  gm._createTiles(1)
 }
 
 export default function (gm, Game) {

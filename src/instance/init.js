@@ -18,12 +18,15 @@ export default function init (Game) {
     initDom(gm, Game)
     initMove(gm, Game)
   }
-  proto._clearTiles = function () {
+  proto._clearTiles = function (child) {
     const { el } = this
     if (el) {
-      let child = null
-      while ((child = el.firstElementChild)) {
-        el.removeChild(child)
+      if (child) {
+        return el.removeChild(child)
+      } else {
+        while ((child = el.firstElementChild)) {
+          el.removeChild(child)
+        }
       }
     }
   }
