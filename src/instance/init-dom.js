@@ -69,9 +69,10 @@ function initShufflePos (gm, num = TILE_NUM) {
   })
 }
 
-const createTiles = (gm) => {
+const createTiles = function () {
+  const gm = this
   const { el, gameState } = gm
-
+  console.log(JSON.stringify(gameState))
   const createdTilePos = initShufflePos(gm)
   if (!createdTilePos.length) return
 
@@ -83,6 +84,8 @@ const createTiles = (gm) => {
   })
 }
 export function initDom (gm, Game) {
+  const proto = Game.prototype
+  proto._createTiles = createTiles
   gm._clearTiles()
-  createTiles(gm)
+  gm._createTiles()
 }

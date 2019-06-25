@@ -1,16 +1,8 @@
 // import Game from './index'
-import { flatArr, types } from '../utils'
-import { on, off } from '../utils/dom'
+import { flatArr } from '../utils'
+import { on, off, changeTilePosClass, getTileFromPos } from '../utils/dom'
 const UNIT_TILES = 4
-
-const getIndex = (x, y) => {
-  if (types.isObject(x)) {
-    x = x.x
-    y = x.y
-  }
-  console.log(666)
-  return (y - 1) * UNIT_TILES + x - 1
-}
+const POS_REG = /tile-position-(\d+)-(\d+)/
 const EVENT_METHOD = 'keydown'
 const ACTIONS_MAP = {
   '37': 'left',
@@ -18,6 +10,15 @@ const ACTIONS_MAP = {
   '39': 'right',
   '40': 'down'
 }
+
+// const getIndex = (x, y) => {
+//   if (types.isObject(x)) {
+//     y = x.y
+//     x = x.x
+//   }
+//   return (y - 1) * UNIT_TILES + x - 1
+// }
+
 function getCorCategory (action) {
   if (action === 'up' || action === 'down') {
     return 'x'
@@ -26,32 +27,74 @@ function getCorCategory (action) {
   }
 }
 
+function reversePos (cor) {
+  return cor === 'x' ? 'y' : 'x'
+}
+function initGameState (gm) {
+  gm.gameState = Array.from({ length: 4 }, () => [...Array(4).fill(null)])
+}
+function tileToGameState (gm) {
+  const tiles = gm._getTiles()
+  initGameState(gm)
+  Array.from(tiles).forEach(tile => {
+    const cls = tile.getAttribute('class')
+    cls.replace(POS_REG, (match, x, y) => {
+      const indexY = y - 1
+      const indexX = x - 1
+      gm.gameState[indexY][indexX] = {
+        x,
+        y,
+        index: UNIT_TILES * (indexY) + (indexX),
+        value: 2,
+        sort: UNIT_TILES * (indexX) + (indexY)
+      }
+    })
+  })
+  console.log(gm.gameState)
+  return tiles
+}
+
 function tileMove (gm, action) {
-  const children = Array.from(gm._getTiles())
-  const posArr = flatArr(gm.gameState).filter(Boolean)
+  const { el, gameState } = gm
+  const posArr = flatArr(gameState).filter(Boolean)
   const corName = getCorCategory(action)
-  // console.log(children)
-  // console.log(posArr)
-  console.log(corName)
-  const sortedArr = posArr.reduce((init, pos) => {
+  const corNeedChange = reversePos(corName)
+
+  const sortedObj = posArr.reduce((init, pos) => {
     const temp = init[pos[corName]] = init[pos[corName]] || []
     temp.push(pos)
     return init
   }, {})
-  console.log(sortedArr)
-  // switch (action) {
-  //   case 'up':
 
-  //     break
-
-  //   default:
-  //     break
-  // }
+  Object.values(sortedObj).forEach(sortedArr => {
+    let flag = null
+    let increment = null
+    if (action === 'up' || action === 'left') {
+      flag = increment = 1
+    } else {
+      flag = UNIT_TILES
+      increment = -1
+      sortedArr.reverse()
+    }
+    sortedArr.forEach(pos => {
+      const tempPos = { x: pos.x, y: pos.y }
+      const specifiedTile = getTileFromPos(tempPos, el)
+      if (tempPos[corNeedChange] !== flag) {
+        tempPos[corNeedChange] = flag
+      }
+      flag += increment
+      changeTilePosClass(specifiedTile, tempPos)
+    })
+  })
+  tileToGameState(gm)
 }
+
 export default function (gm, Game) {
   const proto = Game.prototype
+
   function keydownHandler (e) {
     const action = ACTIONS_MAP[e.keyCode]
+    if (!action) return
     e.preventDefault()
     tileMove(gm, action)
   }

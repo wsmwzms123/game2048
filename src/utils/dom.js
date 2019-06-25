@@ -1,5 +1,6 @@
 import { types } from './index'
 const SPACE_REG = /\s+/
+const POSITION_CLASS_PREFIX = 'tile-position'
 
 const query = (el) => {
   const GAME_DEFAULT_CONTAINER = '.tile-container'
@@ -61,4 +62,16 @@ const off = (el, eventName, cb) => {
   return el.removeEventListener(eventName, cb)
 }
 
-export { query, addClass, removeClass, on, off }
+const changeTilePosClass = (el, pos) => {
+  let cls = el.getAttribute('class')
+  cls = cls.replace(/(tile-position-)(\d+-\d+)/, `$1${pos.x}-${pos.y}`)
+  el.setAttribute('class', cls)
+}
+
+const getTileFromPos = (pos, ctx) => {
+  ctx = ctx || document
+  const clsName = `.${POSITION_CLASS_PREFIX}-${pos.x || 1}-${pos.y || 1}`
+  return ctx.querySelector(clsName)
+}
+
+export { query, addClass, removeClass, on, off, changeTilePosClass, getTileFromPos }
