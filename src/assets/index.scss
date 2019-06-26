@@ -78,31 +78,31 @@ body {
           color: $tile-font-color;
           background: #f65e3b; 
         }
-        &.tile-128.tile-inner {
+        &.tile-128 .tile-inner {
           color: $tile-font-color;
           background: #edcf72;
           font-size: 45px;
           @include box-shadow(0.2381, 0.14286)
         }
-        &.tile-256.tile-inner {
+        &.tile-256 .tile-inner {
           color: $tile-font-color;
           background: #edcc61;
           font-size: 45px;
           @include box-shadow(0.31746, 0.19048)
         }
-        &.tile-512.tile-inner {
+        &.tile-512 .tile-inner {
           color: $tile-font-color;
           background: #edc850;
           font-size: 45px;
           @include box-shadow(0.39683, 0.2381)
         }
-        &.tile-1024.tile-inner {
+        &.tile-1024 .tile-inner {
           color: $tile-font-color;
           background: #edc53f;
           font-size: 35px;
           @include box-shadow(0.47619, 0.28571)
         }
-        &.tile-2048.tile-inner {
+        &.tile-2048 .tile-inner {
           color: $tile-font-color;
           background: #edc22e;
           font-size: 35px;

@@ -1,6 +1,7 @@
 import { types } from './index'
 const SPACE_REG = /\s+/
 const POSITION_CLASS_PREFIX = 'tile-position'
+const TILE_CLASS = 'tile'
 
 const query = (el) => {
   const GAME_DEFAULT_CONTAINER = '.tile-container'
@@ -79,6 +80,10 @@ const getNum = (el) => {
 }
 
 const doubleNum = (el, num) => {
-  el.querySelector('.tile-inner').textContent = +getNum(el) * 2
+  const target = el.querySelector('.tile-inner')
+  const value = Number(getNum(el))
+  target.textContent = value * 2
+  removeClass(el, `${TILE_CLASS}-${value}`)
+  addClass(el, `${TILE_CLASS}-${value * 2}`)
 }
 export { query, addClass, removeClass, on, off, changeTilePosClass, getTileFromPos, getNum, doubleNum }
