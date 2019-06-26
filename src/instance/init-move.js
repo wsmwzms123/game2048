@@ -4,6 +4,7 @@ import { on, off, changeTilePosClass, getTileFromPos, getNum, doubleNum } from '
 const UNIT_TILES = 4
 const POS_REG = /tile-position-(\d+)-(\d+)/
 const EVENT_METHOD = 'keydown'
+console.log(666)
 const ACTIONS_MAP = {
   '37': 'left',
   '38': 'up',
