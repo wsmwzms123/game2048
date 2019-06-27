@@ -1,14 +1,12 @@
 import { types } from './index'
+
 const SPACE_REG = /\s+/
 const POSITION_CLASS_PREFIX = 'tile-position'
-const TILE_CLASS = 'tile'
 
-const query = (el) => {
-  const GAME_DEFAULT_CONTAINER = '.tile-container'
-  el = types.isString(el)
-    ? document.querySelector(el)
+const query = (el, ctx = document) => {
+  return types.isString(el)
+    ? ctx.querySelector(el)
     : el
-  return el || document.querySelector(GAME_DEFAULT_CONTAINER)
 }
 
 const addClass = (el, cls) => {
@@ -56,11 +54,11 @@ const removeClass = (el, cls) => {
 }
 
 const on = (el, eventName, cb) => {
-  return el.addEventListener(eventName, cb)
+  return el.addEventListener(eventName, cb, false)
 }
 
 const off = (el, eventName, cb) => {
-  return el.removeEventListener(eventName, cb)
+  return el.removeEventListener(eventName, cb, false)
 }
 
 const changeTilePosClass = (el, pos) => {
@@ -75,15 +73,8 @@ const getTileFromPos = (pos, ctx) => {
   return ctx.querySelector(clsName)
 }
 
-const getNum = (el) => {
+const getText = el => {
   return el.textContent
 }
 
-const doubleNum = (el, num) => {
-  const target = el.querySelector('.tile-inner')
-  const value = Number(getNum(el))
-  target.textContent = value * 2
-  removeClass(el, `${TILE_CLASS}-${value}`)
-  addClass(el, `${TILE_CLASS}-${value * 2}`)
-}
-export { query, addClass, removeClass, on, off, changeTilePosClass, getTileFromPos, getNum, doubleNum }
+export { query, addClass, removeClass, on, off, changeTilePosClass, getTileFromPos, getText }
