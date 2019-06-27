@@ -2,7 +2,7 @@ import { types } from './index'
 const SPACE_REG = /\s+/
 const POSITION_CLASS_PREFIX = 'tile-position'
 const TILE_CLASS = 'tile'
-
+console.log(666)
 const query = (el) => {
   const GAME_DEFAULT_CONTAINER = '.tile-container'
   el = types.isString(el)
