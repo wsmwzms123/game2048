@@ -10,7 +10,7 @@ function initStorage (gm) {
 }
 
 export default function (gm) {
-  gm.best = storage.get('best') || 0
+  gm.best = gm.score = storage.get('best') || 0
   gm.state = storage.get('state')
     ? JSON.parse(storage.get('state'))
     : createNullState()
