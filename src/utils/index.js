@@ -1,6 +1,6 @@
 const types = {}
 const toString = Object.prototype.toString
-const typesList = 'String Object Array Number Boolean Symbol Set Map Null Undefined'
+const typesList = 'String Function Object Array Number Boolean Symbol Set Map Null Undefined'
 
 typesList.split(/\s+/).forEach(name => {
   types['is' + name] = function (target) {

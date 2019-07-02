@@ -7,7 +7,7 @@ export default function (obj, name, cb) {
 
   Object.defineProperty(obj, name, {
     enumerable: true,
-    writable: true,
+    configurable: true,
     get () {
       return getter ? getter.call(obj) : value
     },
@@ -16,7 +16,7 @@ export default function (obj, name, cb) {
       if (setter) {
         setter.call(obj)
       } else {
-        obj[name] = newVal
+        value = newVal
         if (types.isFunction(cb)) {
           cb.call(obj, newVal)
         }
