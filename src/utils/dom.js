@@ -2,12 +2,13 @@ import { types } from './index'
 const SPACE_REG = /\s+/
 const POSITION_CLASS_PREFIX = 'tile-position'
 const TILE_CLASS = 'tile'
+
 const query = (el) => {
   const GAME_DEFAULT_CONTAINER = '.tile-container'
-  el = types.isString(el)
+
+  return types.isString(el)
     ? document.querySelector(el)
     : el
-  return el || document.querySelector(GAME_DEFAULT_CONTAINER)
 }
 
 const addClass = (el, cls) => {

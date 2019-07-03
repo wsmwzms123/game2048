@@ -2,6 +2,7 @@ import initState from './init-state'
 import initMove from './init-move'
 import { initDom } from './init-dom'
 import { query } from '../utils/dom'
+
 export default function init (Game) {
   const proto = Game.prototype
   proto._init = function (options = {}) {
@@ -12,28 +13,9 @@ export default function init (Game) {
     }
     Game._currentInstance = gm
     Game._hasInstance = true
-    gm.options = options
-    gm.el = query(options.el)
+    gm.el = query('.tile-container')
     initState(gm)
     initDom(gm, Game)
     initMove(gm, Game)
-  }
-  proto._clearTiles = function (child) {
-    const { el } = this
-    if (el) {
-      if (child) {
-        return el.removeChild(child)
-      } else {
-        while ((child = el.firstElementChild)) {
-          el.removeChild(child)
-        }
-      }
-    }
-  }
-  proto._getTiles = function () {
-    const { el } = this
-    if (el) {
-      return el.children
-    }
   }
 }
